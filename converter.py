@@ -49,6 +49,7 @@ class Ui_MainWindow(object):
         self.LengthLabel.setFont(font)
         self.LengthLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.LengthLabel.setObjectName("LengthLabel")
+
         self.HexResult = QtWidgets.QLabel(self.centralwidget)
         self.HexResult.setGeometry(QtCore.QRect(30, 210, 221, 61))
         self.HexResult.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -56,6 +57,8 @@ class Ui_MainWindow(object):
         self.HexResult.setText("")
         self.HexResult.setAlignment(QtCore.Qt.AlignCenter)
         self.HexResult.setObjectName("HexResult")
+        self.HexResult.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+
         self.DecResult = QtWidgets.QLabel(self.centralwidget)
         self.DecResult.setGeometry(QtCore.QRect(300, 210, 221, 61))
         self.DecResult.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -65,6 +68,8 @@ class Ui_MainWindow(object):
         self.DecResult.setAlignment(QtCore.Qt.AlignCenter)
         self.DecResult.setWordWrap(False)
         self.DecResult.setObjectName("DecResult")
+        self.DecResult.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(250, 210, 51, 61))
         font = QtGui.QFont()
@@ -115,8 +120,19 @@ class Ui_MainWindow(object):
         if self.LengthText.text() is not None:
             counter = int(self.LengthText.text())
             for i in range(0, counter):
-                dec_val += int(hex_value[i])
+                dec_val += int(self.hex_table(hex_value[i]))*(16**(counter-i-1))
         self.DecResult.setText(str(dec_val))
+
+    def hex_table(self, char):
+        switch={ # Value of each Hex Letter
+            'A':10,
+            'B':11,
+            'C':12,
+            'D':13,
+            'E':14,
+            'F':15,
+        }
+        return switch.get(char, char) # Return the value if not defined
 
     def ConvertDecToHex(self):
         # Fill out once HexToDec is completed
