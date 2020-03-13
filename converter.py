@@ -114,14 +114,17 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "<-->"))
 
     def ConvertHexToDec(self):
-        #self.HexText.text()  Determine the hexadecimal text
-        dec_val = 0 # Value of Decimal Conversion, start at 0.
-        hex_value = list(self.HexText.text())
+        value = 0 # Value of Decimal Conversion, start at 0.
+        array = list(self.HexText.text())
         if self.LengthText.text() is not None:
             counter = int(self.LengthText.text())
             for i in range(0, counter):
-                dec_val += int(self.hex_table(hex_value[i]))*(16**(counter-i-1))
-        self.DecResult.setText(str(dec_val))
+                value += int(self.hex_table(array[i]))*(16**(counter-i-1))
+        elif len(self.HexText.text() >= 0):
+            counter = len(self.HexText.text())
+            for i in range(0, counter):
+                value += int(self.hex_table(array[i])) * (16 ** (counter - i - 1))
+        self.DecResult.setText(str(value))
 
     def hex_table(self, char):
         switch={ # Value of each Hex Letter
@@ -134,9 +137,20 @@ class Ui_MainWindow(object):
         }
         return switch.get(char, char) # Return the value if not defined
 
+    def dec_table(self, char):
+        switch={ # Value of each Hex Letter
+            10:'A',
+            11:'B',
+            12:'C',
+            13:'D',
+            14:'E',
+            15:'F',
+        }
+        return switch.get(char, char) # Return the value if not defined
+
     def ConvertDecToHex(self):
-        # Fill out once HexToDec is completed
-        print(None)
+        dec = hex(int(self.DecText.text()))
+        self.HexResult.setText(dec)
 
 if __name__ == "__main__":
     import sys
